@@ -11,12 +11,15 @@
 
 set -e
 
-mkdir -p out_dir
+mkdir -p t1_brain
 
 export SINGULARITYENV_LC_ALL=C.UTF-8
 export SINGULARITYENV_LANG=C.UTF-8
 
 singularity exec -e docker://brainlife/fsl:6.0.4 bash run_bet.sh
 
-[ -z "$(ls -A out_dir)" ] && echo "no output produced" && exit 1
+# brainlife neuro/anat/t1w expects t1.nii.gz at the working-dir root
+cp t1_brain/t1.nii.gz t1.nii.gz
+
+[ ! -f t1.nii.gz ] && echo "no output produced" && exit 1
 exit 0
